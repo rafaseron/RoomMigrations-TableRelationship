@@ -1,4 +1,4 @@
-package br.com.alura.helloapp.navigation
+package br.com.alura.helloapp.navigation.typeSafety
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument

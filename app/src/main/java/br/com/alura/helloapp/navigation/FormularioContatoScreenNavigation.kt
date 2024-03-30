@@ -9,44 +9,34 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.alura.helloapp.R
+import br.com.alura.helloapp.navigation.typeSafety.FormularioContato
 import br.com.alura.helloapp.ui.screens.FormularioContatoTela
 import br.com.alura.helloapp.ui.viewmodels.FormularioContatoViewModel
 import br.com.alura.helloapp.util.ID_CONTATO
 import kotlinx.coroutines.launch
 
-fun NavGraphBuilder.formularioContatoGraph(
-    onVolta: () -> Unit
-) {
-    composable(
-        route = FormularioContato.rotaComArgumentos,
-        arguments = FormularioContato.argumentos
-    ) { navBackStackEntry ->
-        navBackStackEntry.arguments?.getLong(
-            ID_CONTATO
-        )?.let {
+fun NavGraphBuilder.formularioContatoScreenNavigation(onVolta: () -> Unit) {
+
+    composable(route = FormularioContato.rotaComArgumentos, arguments = FormularioContato.argumentos) {
+        navBackStackEntry ->
+        navBackStackEntry.arguments?.getLong(ID_CONTATO)?.let {
+
             val viewModel = hiltViewModel<FormularioContatoViewModel>()
             val state by viewModel.uiState.collectAsState()
             val context = LocalContext.current
 
             LaunchedEffect(state.aniversario) {
-                viewModel.defineTextoAniversario(
-                    context.getString(R.string.aniversario)
-                )
+                viewModel.defineTextoAniversario(context.getString(R.string.aniversario))
             }
             val coroutineScope = rememberCoroutineScope()
 
-            FormularioContatoTela(
-                state = state,
-                onClickSalva = {
+            FormularioContatoTela(state = state, onClickSalva = {
                     coroutineScope.launch {
                         viewModel.salva()
                     }
                     onVolta()
-                },
-                onCarregaImagem = {
-                    viewModel.carregaImagem(it)
-                }
-            )
+                }, onCarregaImagem = { viewModel.carregaImagem(it) } )
+
         }
     }
 }

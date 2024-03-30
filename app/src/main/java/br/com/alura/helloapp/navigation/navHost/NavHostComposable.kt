@@ -1,10 +1,22 @@
-package br.com.alura.helloapp.navigation
+package br.com.alura.helloapp.navigation.navHost
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import br.com.alura.helloapp.navigation.buscaContatosScreenNavigation
+import br.com.alura.helloapp.navigation.detalhesContatoScreenNavigation
+import br.com.alura.helloapp.navigation.formularioContatoScreenNavigation
+import br.com.alura.helloapp.navigation.listaContatosScreenNavigation
+import br.com.alura.helloapp.navigation.loginGraphNavigation
+import br.com.alura.helloapp.navigation.splashNavigation
+import br.com.alura.helloapp.navigation.typeSafety.DetalhesContato
+import br.com.alura.helloapp.navigation.typeSafety.FormularioContato
+import br.com.alura.helloapp.navigation.typeSafety.FormularioUsuario
+import br.com.alura.helloapp.navigation.typeSafety.ListaUsuarios
+import br.com.alura.helloapp.navigation.typeSafety.TypeSafetyNavigation
+import br.com.alura.helloapp.navigation.usuariosGraphNavigation
 
 @Composable
 fun NavHostComposable(
@@ -12,25 +24,25 @@ fun NavHostComposable(
 ) {
     NavHost(navController = navController, startDestination = TypeSafetyNavigation.SplashScreen.rota, modifier = modifier) {
 
-        splashGraph(onNavegaParaLogin = { navController.NavegaParaLoginElimpaBackStack() }, onNavegaParaHome = { navController.navegaParaHome() })
+        splashNavigation(onNavegaParaLogin = { navController.NavegaParaLoginElimpaBackStack() }, onNavegaParaHome = { navController.navegaParaHome() })
 
-        loginGraph(onNavegaParaHome = { navController.navegaParaHome() }, onNavegaParaFormularioLogin = { navController.navegaParaFormlarioLogin() },
+        loginGraphNavigation(onNavegaParaHome = { navController.navegaParaHome() }, onNavegaParaFormularioLogin = { navController.navegaParaFormlarioLogin() },
             onNavegaParaLogin = { navController.NavegaParaLoginElimpaBackStack() })
 
-        homeGraph(onNavegaParaDetalhes = { idContato -> navController.navegaParaDetalhes(idContato) },
+        listaContatosScreenNavigation(onNavegaParaDetalhes = { idContato -> navController.navegaParaDetalhes(idContato) },
             onNavegaParaFormularioContato = { navController.navegaParaFormularioContato() },
             onNavegaParaDialgoUsuarios = { idUsuario -> navController.navegaParaDialgoUsuarios(idUsuario) },
             onNavegaParaBuscaContatos = { navController.navegaParaBuscaContatos() })
 
-        formularioContatoGraph(onVolta = { navController.popBackStack() })
+        formularioContatoScreenNavigation(onVolta = { navController.popBackStack() })
 
-        detalhesContatoGraph(onVolta = { navController.popBackStack() }, onNavegaParaDialgoUsuarios = { idContato -> navController.navegaParaFormularioContato(idContato) })
+        detalhesContatoScreenNavigation(onVolta = { navController.popBackStack() }, onNavegaParaDialgoUsuarios = { idContato -> navController.navegaParaFormularioContato(idContato) })
 
-        usuariosGraph(onVolta = { navController.popBackStack() }, onNavegaParaLogin = { navController.navegaParaLogin() },
+        usuariosGraphNavigation(onVolta = { navController.popBackStack() }, onNavegaParaLogin = { navController.navegaParaLogin() },
             onNavegaParaHome = { navController.navegaParaHome() }, onNavegaGerenciaUsuarios = { navController.navegaParaGerenciaUsuarios() },
             onNavegaParaFormularioUsuario = { idUsuario -> navController.navegaParaFormularioUsuario(idUsuario) })
 
-        buscaContatosGraph(onVolta = { navController.popBackStack() }, onClickNavegaParaDetalhesContato = { idContato -> navController.navegaParaDetalhes(idContato) })
+        buscaContatosScreenNavigation(onVolta = { navController.popBackStack() }, onClickNavegaParaDetalhesContato = { idContato -> navController.navegaParaDetalhes(idContato) })
 
     }
 }

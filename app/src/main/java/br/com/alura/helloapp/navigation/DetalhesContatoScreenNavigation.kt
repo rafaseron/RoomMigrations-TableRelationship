@@ -9,22 +9,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.alura.helloapp.R
 import br.com.alura.helloapp.extensions.mostraMensagem
+import br.com.alura.helloapp.navigation.typeSafety.DetalhesContato
 import br.com.alura.helloapp.ui.screens.DetalhesContatoTela
 import br.com.alura.helloapp.ui.viewmodels.DetalhesContatoViewlModel
 import br.com.alura.helloapp.util.ID_CONTATO
 import kotlinx.coroutines.launch
 
-fun NavGraphBuilder.detalhesContatoGraph(
-    onVolta: () -> Unit,
-    onNavegaParaDialgoUsuarios: (Long) -> Unit,
-) {
-    composable(
-        route = DetalhesContato.rotaComArgumentos,
-        arguments = DetalhesContato.argumentos
-    ) { navBackStackEntry ->
-        navBackStackEntry.arguments?.getLong(
-            ID_CONTATO
-        )?.let { idContato ->
+fun NavGraphBuilder.detalhesContatoScreenNavigation(onVolta: () -> Unit, onNavegaParaDialgoUsuarios: (Long) -> Unit) {
+
+    composable(route = DetalhesContato.rotaComArgumentos, arguments = DetalhesContato.argumentos) {
+        navBackStackEntry ->
+        navBackStackEntry.arguments?.getLong(ID_CONTATO)?.let {
+            idContato ->
 
             val viewModel = hiltViewModel<DetalhesContatoViewlModel>()
             val state by viewModel.uiState.collectAsState()
@@ -32,10 +28,7 @@ fun NavGraphBuilder.detalhesContatoGraph(
             val scope = rememberCoroutineScope()
             val context = LocalContext.current
 
-            DetalhesContatoTela(
-                state = state,
-                onClickVolta = onVolta,
-                onApagaContato = {
+            DetalhesContatoTela(state = state, onClickVolta = onVolta, onApagaContato = {
                     scope.launch {
                         viewModel.removeContato()
                         context.mostraMensagem(context.getString(R.string.contato_apagado))

@@ -8,24 +8,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import br.com.alura.helloapp.navigation.typeSafety.TypeSafetyNavigation
 import br.com.alura.helloapp.ui.screens.FormularioLoginTela
 import br.com.alura.helloapp.ui.viewmodels.FormularioLoginViewModel
 import br.com.alura.helloapp.ui.screens.LoginTela
 import br.com.alura.helloapp.ui.viewmodels.LoginViewModel
 import kotlinx.coroutines.launch
 
-fun NavGraphBuilder.loginGraph(
-    onNavegaParaHome: () -> Unit,
-    onNavegaParaFormularioLogin: () -> Unit,
-    onNavegaParaLogin: () -> Unit,
-) {
-    navigation(
-        startDestination = TypeSafetyNavigation.Login.rota,
-        route = TypeSafetyNavigation.LoginGraph.rota
-    ) {
-        composable(
-            route = TypeSafetyNavigation.Login.rota,
-        ) {
+fun NavGraphBuilder.loginGraphNavigation(onNavegaParaHome: () -> Unit, onNavegaParaFormularioLogin: () -> Unit,
+                                         onNavegaParaLogin: () -> Unit) {
+
+    navigation(startDestination = TypeSafetyNavigation.Login.rota, route = TypeSafetyNavigation.LoginGraph.rota) {
+
+        composable(route = TypeSafetyNavigation.Login.rota) {
+
             val viewModel = hiltViewModel<LoginViewModel>()
             val state by viewModel.uiState.collectAsState()
 
@@ -37,19 +33,16 @@ fun NavGraphBuilder.loginGraph(
 
             val coroutineScope = rememberCoroutineScope()
 
-            LoginTela(
-                state = state,
-                onClickLoga = {
+            LoginTela(state = state, onClickLoga = {
                     coroutineScope.launch {
                         viewModel.tentaLogar()
                     }
-                }, onClickCriaLogin = onNavegaParaFormularioLogin
-            )
+                }, onClickCriaLogin = onNavegaParaFormularioLogin )
+
         }
 
-        composable(
-            route = TypeSafetyNavigation.FormularioLogin.rota,
-        ) {
+        composable(route = TypeSafetyNavigation.FormularioLogin.rota) {
+
             val viewModel = hiltViewModel<FormularioLoginViewModel>()
             val state by viewModel.uiState.collectAsState()
 
@@ -61,6 +54,8 @@ fun NavGraphBuilder.loginGraph(
                 }
                 onNavegaParaLogin()
             })
+
         }
+
     }
 }
