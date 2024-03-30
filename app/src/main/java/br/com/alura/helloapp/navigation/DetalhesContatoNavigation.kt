@@ -9,8 +9,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.alura.helloapp.R
 import br.com.alura.helloapp.extensions.mostraMensagem
-import br.com.alura.helloapp.ui.details.DetalhesContatoTela
-import br.com.alura.helloapp.ui.details.DetalhesContatoViewlModel
+import br.com.alura.helloapp.ui.screens.DetalhesContatoTela
+import br.com.alura.helloapp.ui.viewmodels.DetalhesContatoViewlModel
 import br.com.alura.helloapp.util.ID_CONTATO
 import kotlinx.coroutines.launch
 

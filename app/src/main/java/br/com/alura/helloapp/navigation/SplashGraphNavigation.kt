@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import br.com.alura.helloapp.ui.splashscreen.AppState
-import br.com.alura.helloapp.ui.splashscreen.SplashScreenViewModel
+import br.com.alura.helloapp.ui.stateHolders.AppState
+import br.com.alura.helloapp.ui.viewmodels.SplashScreenViewModel
 
 fun NavGraphBuilder.splashGraph(
     onNavegaParaLogin: () -> Unit,
     onNavegaParaHome: () -> Unit
 ) {
     composable(
-        route = DestinosHelloApp.SplashScreen.rota
+        route = TypeSafetyNavigation.SplashScreen.rota
     ) {
         val viewModel = hiltViewModel<SplashScreenViewModel>()
         val state by viewModel.uiState.collectAsState()

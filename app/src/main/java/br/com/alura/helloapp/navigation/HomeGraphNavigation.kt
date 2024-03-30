@@ -6,8 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import br.com.alura.helloapp.ui.home.ListaContatosTela
-import br.com.alura.helloapp.ui.home.ListaContatosViewModel
+import br.com.alura.helloapp.ui.screens.ListaContatosTela
+import br.com.alura.helloapp.ui.viewmodels.ListaContatosViewModel
 
 fun NavGraphBuilder.homeGraph(
     onNavegaParaDetalhes: (Long) -> Unit,
@@ -16,10 +16,10 @@ fun NavGraphBuilder.homeGraph(
     onNavegaParaBuscaContatos: () -> Unit
 ) {
     navigation(
-        startDestination = DestinosHelloApp.ListaContatos.rota,
-        route = DestinosHelloApp.HomeGraph.rota,
+        startDestination = TypeSafetyNavigation.ListaContatos.rota,
+        route = TypeSafetyNavigation.HomeGraph.rota,
     ) {
-        composable(route = DestinosHelloApp.ListaContatos.rota) {
+        composable(route = TypeSafetyNavigation.ListaContatos.rota) {
             val viewModel = hiltViewModel<ListaContatosViewModel>()
             val state by viewModel.uiState.collectAsState()
 

@@ -8,7 +8,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navigation
-import br.com.alura.helloapp.ui.userDialog.*
+import br.com.alura.helloapp.ui.screens.CaixaDialogoContasUsuario
+import br.com.alura.helloapp.ui.screens.FormularioUsuarioTela
+import br.com.alura.helloapp.ui.screens.GerenciaUsuariosTela
+import br.com.alura.helloapp.ui.viewmodels.FormularioUsuarioViewModel
+import br.com.alura.helloapp.ui.viewmodels.GerenciaUsuariosViewModel
+import br.com.alura.helloapp.ui.viewmodels.ListaUsuariosViewModel
 import br.com.alura.helloapp.util.ID_USUARIO_ATUAL
 import kotlinx.coroutines.launch
 
@@ -21,7 +26,7 @@ fun NavGraphBuilder.usuariosGraph(
 ) {
     navigation(
         startDestination = ListaUsuarios.rota,
-        route = DestinosHelloApp.UsuariosGraph.rota
+        route = TypeSafetyNavigation.UsuariosGraph.rota
     ) {
         dialog(
             route = ListaUsuarios.rotaComArgumentos,
@@ -55,7 +60,7 @@ fun NavGraphBuilder.usuariosGraph(
         }
 
         composable(
-            route = DestinosHelloApp.GerenciaUsuarios.rota
+            route = TypeSafetyNavigation.GerenciaUsuarios.rota
         ) {
             val viewModel = hiltViewModel<GerenciaUsuariosViewModel>()
             val state by viewModel.uiState.collectAsState()

@@ -5,14 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import br.com.alura.helloapp.ui.search.BuscaContatosTela
-import br.com.alura.helloapp.ui.search.BuscaContatosViewModel
+import br.com.alura.helloapp.ui.screens.BuscaContatosTela
+import br.com.alura.helloapp.ui.viewmodels.BuscaContatosViewModel
 
 fun NavGraphBuilder.buscaContatosGraph(
     onVolta: () -> Unit,
     onClickNavegaParaDetalhesContato: (Long) -> Unit
 ) {
-    composable(route = DestinosHelloApp.BuscaContatos.rota) {
+    composable(route = TypeSafetyNavigation.BuscaContatos.rota) {
         val viewModel = hiltViewModel<BuscaContatosViewModel>()
         val state by viewModel.uiState.collectAsState()
 
