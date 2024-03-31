@@ -3,7 +3,7 @@ package br.com.alura.helloapp.localData.room.converter
 import androidx.room.TypeConverter
 import java.util.*
 
-class TypeConverters {
+class TypeConverter {
     @TypeConverter
     fun deDateParaLong(valor: Date?): Long?{
         return valor?.time
