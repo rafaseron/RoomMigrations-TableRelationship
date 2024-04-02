@@ -1,6 +1,5 @@
 package br.com.alura.helloapp.localData.room.repository
 
-import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.localData.room.database.HelloAppDatabase
 import br.com.alura.helloapp.localData.room.entity.Contato
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +42,7 @@ class ContatoRepository @Inject constructor(db: HelloAppDatabase){
         val contatoPesquisado = searchContactFromId(contato.id)
         val contatoSemFlow = contatoPesquisado.first()
         contatoSemFlow?.let {
-            atualizarContato(it)
+            atualizarContato(contato)
         }
     }
 
