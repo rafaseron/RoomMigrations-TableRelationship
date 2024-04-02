@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
 import br.com.alura.helloapp.localData.preferences.PreferencesKey
+import br.com.alura.helloapp.localData.room.converter.HashConverter.Companion.toHash256
+import br.com.alura.helloapp.localData.room.repository.UsuarioRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +24,7 @@ data class LoginUiState(
 )
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val dataStore: DataStore<Preferences>): ViewModel() {
+class LoginViewModel @Inject constructor(private val usuarioRepository: UsuarioRepository): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
@@ -45,20 +47,11 @@ class LoginViewModel @Inject constructor(private val dataStore: DataStore<Prefer
     }
 
     suspend fun tentaLogar() {
-        dataStore.data.collect { preferences ->
-            val senha = preferences[PreferencesKey.SENHA]
-            val usuario = preferences[PreferencesKey.USUARIO]
-
-            if (usuario == _uiState.value.usuario &&
-                senha == _uiState.value.senha
-            ) {
-                dataStore.edit {
-                    it[PreferencesKey.LOGADO] = true
-                }
-                logaUsuario()
-            } else {
-                exibeErro()
-            }
+        val tentarLogar = usuarioRepository.autenticarUsuario(username = uiState.value.usuario, password = uiState.value.senha)
+        if (tentarLogar){
+            logaUsuario()
+        }else{
+            exibeErro()
         }
     }
 

@@ -1,10 +1,8 @@
 package br.com.alura.helloapp.ui.viewmodels
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
-import br.com.alura.helloapp.localData.preferences.PreferencesKey
+import br.com.alura.helloapp.localData.room.entity.Usuario
+import br.com.alura.helloapp.localData.room.repository.UsuarioRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,7 +20,7 @@ data class FormularioLoginUiState(
 )
 
 @HiltViewModel
-class FormularioLoginViewModel @Inject constructor(private val dataStore: DataStore<Preferences>): ViewModel() {
+class FormularioLoginViewModel @Inject constructor(private val usuarioRepository: UsuarioRepository): ViewModel() {
 
     private val _uiState = MutableStateFlow(FormularioLoginUiState())
     val uiState = _uiState.asStateFlow()
@@ -50,11 +48,7 @@ class FormularioLoginViewModel @Inject constructor(private val dataStore: DataSt
     }
 
     suspend fun salvaLogin() {
-        dataStore.edit { preferences ->
-            preferences[PreferencesKey.USUARIO] =
-                _uiState.value.usuario
-            preferences[PreferencesKey.SENHA] =
-                _uiState.value.senha
-        }
+        val newUser = Usuario(name = uiState.value.nome, password = uiState.value.senha, username = uiState.value.usuario)
+        usuarioRepository.insert(newUser)
     }
 }
