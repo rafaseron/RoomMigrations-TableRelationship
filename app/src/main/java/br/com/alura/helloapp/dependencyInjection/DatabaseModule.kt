@@ -34,7 +34,7 @@ class DatabaseModule {
     }
 
     @Provides
-    fun provideContatoRepository(contatoDao: ContatoDao): ContatoRepository{
-        return ContatoRepository(contatoDao)
+    fun provideContatoRepository(db: HelloAppDatabase): ContatoRepository{
+        return ContatoRepository(db)
     }
 }

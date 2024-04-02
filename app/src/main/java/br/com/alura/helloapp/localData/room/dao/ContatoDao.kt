@@ -18,7 +18,7 @@ interface ContatoDao {
     suspend fun update(contato: Contato)
 
     @Query("SELECT * FROM Contato")
-    suspend fun buscaTodos(): Flow<List<Contato>>
+    fun buscaTodos(): Flow<List<Contato>>
 
     @Query("SELECT * FROM Contato WHERE id = :id")
     fun buscaPorId(id: Long): Flow<Contato?>
