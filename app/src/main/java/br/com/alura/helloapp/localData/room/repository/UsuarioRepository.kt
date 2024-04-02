@@ -1,5 +1,6 @@
 package br.com.alura.helloapp.localData.room.repository
 
+import br.com.alura.helloapp.localData.room.converter.HashConverter.Companion.toHash256
 import br.com.alura.helloapp.localData.room.database.HelloAppDatabase
 import br.com.alura.helloapp.localData.room.entity.Usuario
 import kotlinx.coroutines.flow.Flow
@@ -10,10 +11,11 @@ class UsuarioRepository @Inject constructor(db: HelloAppDatabase) {
     private val usuarioDao = db.usuarioDao()
 
     suspend fun insert(usuario: Usuario){
+        val newUser = Usuario(name = usuario.name, username = usuario.username, password = usuario.password.toHash256())
         val usuarioPesquisado = searchUsername(usuario.username)
         usuarioPesquisado?.let {
             //nao inserir se ja existe
-        } ?: return usuarioDao.insert(usuario)
+        } ?: return usuarioDao.insert(newUser)
     }
 
     suspend fun delete(usuario: Usuario){
@@ -32,6 +34,13 @@ class UsuarioRepository @Inject constructor(db: HelloAppDatabase) {
 
     private suspend fun searchUsername(username: String): Usuario?{
         return usuarioDao.searchUserFromUsername(username)
+    }
+
+    suspend fun autenticarUsuario(username: String, password: String): Boolean{
+        val pesquisarUsuario = searchUsername(username)
+        pesquisarUsuario?.let {
+            return it.password == password.toHash256()
+        }?: return false
     }
 
     fun getAllUsers(): Flow<List<Usuario>>{
