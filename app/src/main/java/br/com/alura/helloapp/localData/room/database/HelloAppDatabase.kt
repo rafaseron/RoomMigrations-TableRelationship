@@ -6,8 +6,9 @@ import androidx.room.TypeConverters
 import br.com.alura.helloapp.localData.room.converter.TypeConverter
 import br.com.alura.helloapp.localData.room.entity.Contato
 import br.com.alura.helloapp.localData.room.dao.ContatoDao
+import br.com.alura.helloapp.localData.room.entity.Usuario
 
-@Database(entities = [Contato::class], version = 1)
+@Database(entities = [Contato::class, Usuario::class], version = 1)
 @TypeConverters(TypeConverter::class)
 abstract class HelloAppDatabase : RoomDatabase() {
     abstract fun contatoDao(): ContatoDao
