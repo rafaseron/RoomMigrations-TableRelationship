@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.localData.room.database.HelloAppDatabase
+import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +31,10 @@ class DatabaseModule {
     @Provides
     fun provideContatoDao(db: HelloAppDatabase): ContatoDao {
         return db.contatoDao()
+    }
+
+    @Provides
+    fun provideContatoRepository(contatoDao: ContatoDao): ContatoRepository{
+        return ContatoRepository(contatoDao)
     }
 }
