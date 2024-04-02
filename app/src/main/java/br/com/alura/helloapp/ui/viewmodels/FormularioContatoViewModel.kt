@@ -11,6 +11,7 @@ import br.com.alura.helloapp.localData.room.entity.Contato
 import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.extensions.converteParaDate
 import br.com.alura.helloapp.extensions.converteParaString
+import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import br.com.alura.helloapp.util.ID_CONTATO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,7 @@ data class FormularioContatoUiState(
 )
 
 @HiltViewModel
-class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStateHandle, private val contatoDao: ContatoDao, private val dataStore: DataStore<Preferences>): ViewModel() {
+class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStateHandle, private val contatoRepository: ContatoRepository, private val dataStore: DataStore<Preferences>): ViewModel() {
 
     private val idContato = savedStateHandle.get<Long>(ID_CONTATO)
 
@@ -88,7 +89,7 @@ class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStat
 
     private suspend fun carregaContato() {
         idContato?.let {
-            val contato = contatoDao.buscaPorId(idContato)
+            val contato = contatoRepository.searchContactFromId(idContato)
             contato.collect {
                 it?.let {
                     with(it) {
@@ -123,7 +124,7 @@ class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStat
 
     suspend fun salva() {
         with(_uiState.value) {
-            contatoDao.insert(
+            contatoRepository.insertContato(
                 Contato(
                     id = id,
                     nome = nome,

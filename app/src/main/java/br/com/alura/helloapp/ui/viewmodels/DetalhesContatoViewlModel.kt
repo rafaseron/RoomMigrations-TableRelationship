@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.helloapp.localData.room.dao.ContatoDao
+import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import br.com.alura.helloapp.util.ID_CONTATO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ data class DetalhesContatoUiState(
 )
 
 @HiltViewModel
-class DetalhesContatoViewlModel @Inject constructor(savedStateHandle: SavedStateHandle, private val contatoDao: ContatoDao) : ViewModel() {
+class DetalhesContatoViewlModel @Inject constructor(savedStateHandle: SavedStateHandle, private val contatoRepository: ContatoRepository) : ViewModel() {
 
     private val idContato = savedStateHandle.get<Long>(ID_CONTATO)
 
@@ -37,7 +38,7 @@ class DetalhesContatoViewlModel @Inject constructor(savedStateHandle: SavedState
 
     private suspend fun carregaContato() {
         idContato?.let {
-            val contato = contatoDao.buscaPorId(idContato)
+            val contato = contatoRepository.searchContactFromId(idContato)
             contato.collect {
                 it?.let {
                     with(it) {
@@ -56,6 +57,8 @@ class DetalhesContatoViewlModel @Inject constructor(savedStateHandle: SavedState
     }
 
     suspend fun removeContato() {
-        idContato?.let { contatoDao.deleta(it) }
+        idContato?.let {
+            contatoRepository.deleteFromId(it)
+        }
     }
 }

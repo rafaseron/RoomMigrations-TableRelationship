@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.localData.room.entity.Contato
+import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,7 @@ data class BuscaContatosUiState(
 )
 
 @HiltViewModel
-class BuscaContatosViewModel @Inject constructor(private val contatoDao: ContatoDao, private val dataStore: DataStore<Preferences>) : ViewModel() {
+class BuscaContatosViewModel @Inject constructor(private val contatoRepository: ContatoRepository, private val dataStore: DataStore<Preferences>) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BuscaContatosUiState())
     val uiState = _uiState.asStateFlow()
