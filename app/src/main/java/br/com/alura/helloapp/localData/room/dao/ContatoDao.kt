@@ -1,9 +1,7 @@
 package br.com.alura.helloapp.localData.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.Companion.REPLACE
-import androidx.room.Query
 import br.com.alura.helloapp.localData.room.entity.Contato
 import kotlinx.coroutines.flow.Flow
 
@@ -11,10 +9,16 @@ import kotlinx.coroutines.flow.Flow
 interface ContatoDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insere(contato: Contato)
+    suspend fun insert(contato: Contato)
+
+    @Delete
+    suspend fun delete(contato: Contato)
+
+    @Update
+    suspend fun update(contato: Contato)
 
     @Query("SELECT * FROM Contato")
-    fun buscaTodos(): Flow<List<Contato>>
+    suspend fun buscaTodos(): Flow<List<Contato>>
 
     @Query("SELECT * FROM Contato WHERE id = :id")
     fun buscaPorId(id: Long): Flow<Contato?>
