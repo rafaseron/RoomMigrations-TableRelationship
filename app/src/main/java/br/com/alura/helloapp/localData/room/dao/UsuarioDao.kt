@@ -5,18 +5,22 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.alura.helloapp.localData.room.entity.Usuario
+import kotlinx.coroutines.flow.Flow
 
 interface UsuarioDao {
 
     @Insert
-    fun insert(usuario: Usuario)
+    suspend fun insert(usuario: Usuario)
 
     @Delete
-    fun delete(usuario: Usuario)
+    suspend fun delete(usuario: Usuario)
 
     @Update
-    fun update(usuario: Usuario)
+    suspend fun update(usuario: Usuario)
 
     @Query("SELECT * FROM Usuario WHERE username = :username")
-    fun searchUserFromUsername(username: String): Usuario?
+    suspend fun searchUserFromUsername(username: String): Usuario?
+
+    @Query("SELECT * FROM Usuario")
+    fun getAllUsers(): Flow<List<Usuario>>
 }
