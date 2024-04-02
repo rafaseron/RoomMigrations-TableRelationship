@@ -123,7 +123,7 @@ class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStat
 
     suspend fun salva() {
         with(_uiState.value) {
-            contatoDao.insere(
+            contatoDao.insert(
                 Contato(
                     id = id,
                     nome = nome,
