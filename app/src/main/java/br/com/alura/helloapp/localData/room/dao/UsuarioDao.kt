@@ -1,12 +1,10 @@
 package br.com.alura.helloapp.localData.room.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import br.com.alura.helloapp.localData.room.entity.Usuario
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface UsuarioDao {
 
     @Insert
