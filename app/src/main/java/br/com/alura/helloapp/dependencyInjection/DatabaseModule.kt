@@ -30,6 +30,7 @@ class DatabaseModule {
             DATABASE_NAME
         )/*.fallbackToDestructiveMigration()*/
             .addMigrations(Migrations.MIGRATION_2_3)
+            .addMigrations(Migrations.MIGRATION_3_4)
             .build()
     }
 
@@ -38,7 +39,12 @@ class DatabaseModule {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE 'Contato' ADD COLUMN 'usernameAtual' TEXT NOT NULL DEFAULT ''")
             }
+        }
 
+        val MIGRATION_3_4 = object: Migration(3,4){
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE 'Usuario' ADD COLUMN 'fotoPerfil' TEXT NOT NULL DEFAULT ''")
+            }
         }
     }
 
