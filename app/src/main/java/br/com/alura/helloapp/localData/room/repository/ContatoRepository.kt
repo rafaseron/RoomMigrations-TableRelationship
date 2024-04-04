@@ -46,4 +46,8 @@ class ContatoRepository @Inject constructor(db: HelloAppDatabase){
         }
     }
 
+    fun getContactsFromUsername(usernameAtual: String): Flow<List<Contato>>{
+        return contatoDao.getContactsFromUsername(usernameAtual)
+    }
+
 }
