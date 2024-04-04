@@ -4,13 +4,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.alura.helloapp.localData.preferences.PreferencesKey
 import br.com.alura.helloapp.localData.room.converter.HashConverter.Companion.toHash256
 import br.com.alura.helloapp.localData.room.repository.UsuarioRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginUiState(
@@ -24,7 +27,7 @@ data class LoginUiState(
 )
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val usuarioRepository: UsuarioRepository): ViewModel() {
+class LoginViewModel @Inject constructor(private val usuarioRepository: UsuarioRepository, private val dataStore: DataStore<Preferences>): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
@@ -62,9 +65,12 @@ class LoginViewModel @Inject constructor(private val usuarioRepository: UsuarioR
     }
 
     private fun logaUsuario() {
-        _uiState.value = _uiState.value.copy(
-            logado = true
-        )
+        _uiState.value = _uiState.value.copy(logado = true)
+        viewModelScope.launch {
+            dataStore.edit {
+                it[PreferencesKey.LOGADO] = true
+            }
+        }
     }
 }
 
