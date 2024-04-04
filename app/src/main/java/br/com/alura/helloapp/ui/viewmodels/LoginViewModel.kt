@@ -69,6 +69,7 @@ class LoginViewModel @Inject constructor(private val usuarioRepository: UsuarioR
         viewModelScope.launch {
             dataStore.edit {
                 it[PreferencesKey.LOGADO] = true
+                it[PreferencesKey.AUTHENTICATED_USER] = uiState.value.usuario
             }
         }
     }
