@@ -30,7 +30,6 @@ fun NavGraphBuilder.listaContatosScreenNavigation(onNavegaParaDetalhes: (Long) -
             LaunchedEffect(Unit) {
                 scope.launch {
                     viewModel.buscaContatos()
-                    //viewModel.buscarFotoDePerfil()
                 }
             }
 

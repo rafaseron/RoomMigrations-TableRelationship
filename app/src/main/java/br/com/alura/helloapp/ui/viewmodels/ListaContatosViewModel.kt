@@ -53,20 +53,6 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
         }
     }
 
-    /*fun buscarFotoDePerfil(){
-        viewModelScope.launch {
-            val preferennces = dataStore.data.first()
-            val usuarioAtual = preferennces[PreferencesKey.AUTHENTICATED_USER]
-            usuarioAtual?.let {
-                usuarioAtual ->
-                val buscarUsuario = usuarioRepository.searchUsername(usuarioAtual)
-                buscarUsuario?.let {
-                    _uiState.value = _uiState.value.copy(fotoPerfil = it.fotoPerfil)
-                }
-            }
-        }
-    }*/
-
     suspend fun desloga() {
         dataStore.edit { preferences ->
             preferences[PreferencesKey.LOGADO] = false
