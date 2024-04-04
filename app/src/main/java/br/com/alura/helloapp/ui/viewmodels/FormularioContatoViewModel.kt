@@ -8,14 +8,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.helloapp.R
 import br.com.alura.helloapp.localData.room.entity.Contato
-import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.extensions.converteParaDate
 import br.com.alura.helloapp.extensions.converteParaString
+import br.com.alura.helloapp.localData.preferences.PreferencesKey
 import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import br.com.alura.helloapp.util.ID_CONTATO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -123,17 +124,28 @@ class FormularioContatoViewModel @Inject constructor(savedStateHandle: SavedStat
     }
 
     suspend fun salva() {
-        with(_uiState.value) {
-            contatoRepository.insertContato(
-                Contato(
-                    id = id,
-                    nome = nome,
-                    sobrenome = sobrenome,
-                    telefone = telefone,
-                    fotoPerfil = fotoPerfil,
-                    aniversario = aniversario
+        val preferences = dataStore.data.first()
+        val atualUser = preferences[PreferencesKey.AUTHENTICATED_USER]
+        atualUser?.let {
+            usuarioAtual ->
+
+            with(_uiState.value) {
+                contatoRepository.insertContato(
+                    Contato(
+                        id = id,
+                        nome = nome,
+                        sobrenome = sobrenome,
+                        telefone = telefone,
+                        fotoPerfil = fotoPerfil,
+                        aniversario = aniversario,
+                        usernameAtual = usuarioAtual
+                    )
                 )
-            )
+            }
+
         }
+
     }
+
+
 }
