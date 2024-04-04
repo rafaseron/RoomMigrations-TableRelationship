@@ -20,4 +20,6 @@ data class Contato(
     val fotoPerfil: String = "",
     @ColumnInfo(name = "aniversario")
     val aniversario: Date? = null,
+    @ColumnInfo(name = "usernameAtual", defaultValue = "")
+    val usernameAtual: String = ""
 )
