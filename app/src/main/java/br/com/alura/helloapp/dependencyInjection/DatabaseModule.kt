@@ -29,14 +29,14 @@ class DatabaseModule {
             HelloAppDatabase::class.java,
             DATABASE_NAME
         )/*.fallbackToDestructiveMigration()*/
-            /*.addMigrations(Migrations.MIGRATION_1_2)*/
+            .addMigrations(Migrations.MIGRATION_2_3)
             .build()
     }
 
     object Migrations{
-        val MIGRATION_1_2 = object: Migration(1,2){
+        val MIGRATION_2_3 = object: Migration(2,3){
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("CREATE TABLE IF NOT EXISTS 'Usuario' ('name' TEXT NOT NULL, 'username' TEXT NOT NULL, 'password' TEXT NOT NULL, PRIMARY KEY('username'))")
+                database.execSQL("ALTER TABLE 'Contato' ADD COLUMN 'usernameAtual' TEXT NOT NULL DEFAULT ''")
             }
 
         }
