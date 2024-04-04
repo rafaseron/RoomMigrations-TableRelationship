@@ -39,6 +39,13 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
             val usuarioAtual = preferences[PreferencesKey.AUTHENTICATED_USER]
             usuarioAtual?.let {
                viewModelScope.launch {
+
+                   //buscar foto de perfil deste Usuario
+                   usuarioRepository.searchUsername(it)?.let {
+                       _uiState.value = _uiState.value.copy(fotoPerfil = it.fotoPerfil)
+                   }
+
+                   //buscar lista de Contatos deste Usuario
                    val contactListFromAtualUsername = contatoRepository.getContactsFromUsername(it)
                    _uiState.value = _uiState.value.copy(contatos = contactListFromAtualUsername.first())
                }
@@ -46,7 +53,7 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
         }
     }
 
-    fun buscarFotoDePerfil(){
+    /*fun buscarFotoDePerfil(){
         viewModelScope.launch {
             val preferennces = dataStore.data.first()
             val usuarioAtual = preferennces[PreferencesKey.AUTHENTICATED_USER]
@@ -58,7 +65,7 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
                 }
             }
         }
-    }
+    }*/
 
     suspend fun desloga() {
         dataStore.edit { preferences ->
