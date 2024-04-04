@@ -48,7 +48,7 @@ fun NavGraphBuilder.loginGraphNavigation(onNavegaParaHome: () -> Unit, onNavegaP
 
             val coroutineScope = rememberCoroutineScope()
 
-            FormularioLoginTela(state = state, onSalva = {
+            FormularioLoginTela(state = state, viewModel = viewModel, onSalva = {
                 coroutineScope.launch {
                     viewModel.salvaLogin()
                 }

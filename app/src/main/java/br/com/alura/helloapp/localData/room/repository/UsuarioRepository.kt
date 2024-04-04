@@ -11,7 +11,7 @@ class UsuarioRepository @Inject constructor(db: HelloAppDatabase) {
     private val usuarioDao = db.usuarioDao()
 
     suspend fun insert(usuario: Usuario){
-        val newUser = Usuario(name = usuario.name, username = usuario.username, password = usuario.password.toHash256())
+        val newUser = Usuario(name = usuario.name, username = usuario.username, password = usuario.password.toHash256(), fotoPerfil = usuario.fotoPerfil)
         val usuarioPesquisado = searchUsername(usuario.username)
         usuarioPesquisado?.let {
             //nao inserir se ja existe
@@ -32,7 +32,7 @@ class UsuarioRepository @Inject constructor(db: HelloAppDatabase) {
         }
     }
 
-    private suspend fun searchUsername(username: String): Usuario?{
+    suspend fun searchUsername(username: String): Usuario?{
         return usuarioDao.searchUserFromUsername(username)
     }
 

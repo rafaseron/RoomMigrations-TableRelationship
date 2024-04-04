@@ -13,6 +13,7 @@ data class FormularioLoginUiState(
     val nome: String = "",
     val usuario: String = "",
     val senha: String = "",
+    val fotoPerfil: String = "",
     val onNomeMudou: (String) -> Unit = {},
     val onUsuarioMudou: (String) -> Unit = {},
     val onSenhaMudou: (String) -> Unit = {},
@@ -48,7 +49,11 @@ class FormularioLoginViewModel @Inject constructor(private val usuarioRepository
     }
 
     suspend fun salvaLogin() {
-        val newUser = Usuario(name = uiState.value.nome, password = uiState.value.senha, username = uiState.value.usuario)
+        val newUser = Usuario(name = uiState.value.nome, password = uiState.value.senha, username = uiState.value.usuario, fotoPerfil = uiState.value.fotoPerfil)
         usuarioRepository.insert(newUser)
+    }
+
+    fun fotoPerfil(newValue: String){
+        _uiState.value = _uiState.value.copy(fotoPerfil = newValue)
     }
 }

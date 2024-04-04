@@ -25,11 +25,13 @@ import androidx.compose.ui.unit.dp
 import br.com.alura.helloapp.R
 import br.com.alura.helloapp.ui.theme.HelloAppTheme
 import br.com.alura.helloapp.ui.viewmodels.FormularioLoginUiState
+import br.com.alura.helloapp.ui.viewmodels.FormularioLoginViewModel
 
 @Composable
 fun FormularioLoginTela(
     state: FormularioLoginUiState,
     modifier: Modifier = Modifier,
+    viewModel: FormularioLoginViewModel,
     onSalva: () -> Unit = {}
 ) {
     Column(Modifier.fillMaxSize()) {
@@ -114,6 +116,11 @@ fun FormularioLoginTela(
                 keyboardActions = (KeyboardActions(onNext = { focuAtual.moveFocus(FocusDirection.Next) }))
             )
 
+            OutlinedTextField(value = state.fotoPerfil, onValueChange = {viewModel.fotoPerfil(it)},
+                modifier = Modifier.fillMaxWidth(1f), label = { Text(text = "Url de Foto de Perfil")},
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                trailingIcon = { Icon(painterResource(id = R.drawable.baseline_add_link_24), contentDescription = null) })
+
             Spacer(Modifier.height(16.dp))
 
             Button(
@@ -132,6 +139,6 @@ fun FormularioLoginTela(
 @Composable
 fun CadastroLoginScreenPreview() {
     HelloAppTheme {
-        FormularioLoginTela(FormularioLoginUiState())
+        //FormularioLoginTela(FormularioLoginUiState())
     }
 }

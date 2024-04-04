@@ -1,5 +1,6 @@
 package br.com.alura.helloapp.navigation
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,7 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import br.com.alura.helloapp.navigation.typeSafety.TypeSafetyNavigation
 import br.com.alura.helloapp.ui.screens.ListaContatosTela
+import br.com.alura.helloapp.ui.viewmodels.ListaContatosUiState
 import br.com.alura.helloapp.ui.viewmodels.ListaContatosViewModel
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.listaContatosScreenNavigation(onNavegaParaDetalhes: (Long) -> Unit, onNavegaParaFormularioContato: () -> Unit,
@@ -20,11 +24,13 @@ fun NavGraphBuilder.listaContatosScreenNavigation(onNavegaParaDetalhes: (Long) -
 
         composable(route = TypeSafetyNavigation.ListaContatos.rota) {
             val viewModel = hiltViewModel<ListaContatosViewModel>()
-            val state by viewModel.uiState.collectAsState()
             val scope = rememberCoroutineScope()
+            val state by viewModel.uiState.collectAsState()
+
             LaunchedEffect(Unit) {
                 scope.launch {
                     viewModel.buscaContatos()
+                    viewModel.buscarFotoDePerfil()
                 }
             }
 
