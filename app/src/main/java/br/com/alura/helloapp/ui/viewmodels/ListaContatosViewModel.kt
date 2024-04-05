@@ -1,6 +1,5 @@
 package br.com.alura.helloapp.ui.viewmodels
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -36,8 +35,8 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
     fun buscaContatos() {
         viewModelScope.launch {
             val preferences = dataStore.data.first()
-            val usuarioAtual = preferences[PreferencesKey.AUTHENTICATED_USER]
-            usuarioAtual?.let {
+            val atualUser = preferences[PreferencesKey.AUTHENTICATED_USER]
+            atualUser?.let {
                viewModelScope.launch {
 
                    //buscar foto de perfil deste Usuario
@@ -47,7 +46,7 @@ class ListaContatosViewModel @Inject constructor(private val contatoRepository: 
 
                    //buscar lista de Contatos deste Usuario
                    val contactListFromAtualUsername = contatoRepository.getContactsFromUsername(it)
-                   _uiState.value = _uiState.value.copy(contatos = contactListFromAtualUsername.first())
+                   _uiState.value = _uiState.value.copy(contatos = contactListFromAtualUsername.first(), usuarioAtual = it)
                }
             }
         }
