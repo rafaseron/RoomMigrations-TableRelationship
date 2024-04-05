@@ -81,10 +81,12 @@ fun NavGraphBuilder.usuariosGraphNavigation(onVolta: () -> Unit, onNavegaParaLog
 
             FormularioUsuarioTela(state = state, onClickVolta = onVolta, onClickSalva = {
                     coroutineScope.launch {
+                        viewModel.atualizarUsuarioOnSaveClick()
                         onVolta()
                     }
                 }, onClickApaga = {
                     coroutineScope.launch {
+                        viewModel.apagarUsuarioOnDeleteClick()
                         onVolta()
                     }
                 }, onClickMostraMensagemExclusao = {
