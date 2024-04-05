@@ -64,8 +64,18 @@ fun NavGraphBuilder.usuariosGraphNavigation(onVolta: () -> Unit, onNavegaParaLog
         }
 
         composable(route = FormularioUsuario.rotaComArgumentos, arguments = FormularioUsuario.argumentos) {
-            usuarioAtual ->
+            navBackStackEntry ->
+            val recuperarIdUsuario = navBackStackEntry.arguments?.getString(ID_USUARIO_ATUAL)
+
             val viewModel = hiltViewModel<FormularioUsuarioViewModel>()
+
+            LaunchedEffect(Unit) {
+                recuperarIdUsuario?.let {
+                    Log.e("RECEBIDO", "No Navigation $it")
+                    viewModel.receberUsernamePeloNavigation(it)
+                }
+            }
+
             val state by viewModel.uiState.collectAsState()
             val coroutineScope = rememberCoroutineScope()
 
