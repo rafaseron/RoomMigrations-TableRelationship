@@ -27,4 +27,7 @@ interface ContatoDao {
 
     @Query("SELECT * FROM Contato WHERE usernameAtual = :username")
     fun getContactsFromUsername(username: String): Flow<List<Contato>>
+
+    @Query("DELETE FROM Contato WHERE usernameAtual = :username")
+    suspend fun deleteAllContactsFromUsername(username: String)
 }

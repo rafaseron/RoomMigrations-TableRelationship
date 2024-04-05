@@ -50,4 +50,8 @@ class ContatoRepository @Inject constructor(db: HelloAppDatabase){
         return contatoDao.getContactsFromUsername(usernameAtual)
     }
 
+    suspend fun deleteAllContactsFromUsername(username: String){
+        return contatoDao.deleteAllContactsFromUsername(username)
+    }
+
 }
