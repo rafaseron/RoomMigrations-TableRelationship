@@ -1,5 +1,7 @@
 package br.com.alura.helloapp.navigation
 
+import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,19 +29,19 @@ fun NavGraphBuilder.usuariosGraphNavigation(onVolta: () -> Unit, onNavegaParaLog
 
         dialog(route = ListaUsuarios.rotaComArgumentos, arguments = ListaUsuarios.argumentos) {
             navBackStackEntry ->
-            navBackStackEntry.arguments?.getLong(ID_USUARIO_ATUAL)?.let {
+            navBackStackEntry.arguments?.getString(ID_USUARIO_ATUAL)?.let {
                 usuarioAtual ->
+                Log.e("ATUAL", "no Navigation -> $usuarioAtual")
 
                 val viewModel = hiltViewModel<ListaUsuariosViewModel>()
                 val state by viewModel.uiState.collectAsState()
-
-                val coroutineScope = rememberCoroutineScope()
+                val scope = rememberCoroutineScope()
 
                 CaixaDialogoContasUsuario(state = state, onClickDispensa = onVolta,
                     onClickAdicionaNovaConta = { onNavegaParaLogin() },
                     onClickListaContatosPorUsuario = {
                         novoUsuario ->
-                        coroutineScope.launch {
+                        scope.launch {
                             onNavegaParaHome()
                         }
                     },

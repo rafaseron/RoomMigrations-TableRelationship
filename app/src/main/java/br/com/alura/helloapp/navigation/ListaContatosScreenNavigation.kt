@@ -37,7 +37,7 @@ fun NavGraphBuilder.listaContatosScreenNavigation(onNavegaParaDetalhes: (Long) -
                 onClickAbreCadastro = { onNavegaParaFormularioContato() },
                 onClickListaUsuarios = {
                      state.usuarioAtual?.let { usuarioAtual ->
-                    onNavegaParaDialgoUsuarios("usuarioAtual")
+                    onNavegaParaDialgoUsuarios(usuarioAtual)
                      }
                 }, onClickBuscaContatos = onNavegaParaBuscaContatos )
 
