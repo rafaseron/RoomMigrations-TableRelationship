@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.alura.helloapp.R
+import br.com.alura.helloapp.localData.room.entity.Usuario
 import br.com.alura.helloapp.ui.components.AsyncImagePerfil
 import br.com.alura.helloapp.ui.theme.HelloAppTheme
 import br.com.alura.helloapp.ui.viewmodels.GerenciaUsuariosUiState
@@ -37,13 +38,12 @@ fun GerenciaUsuariosTela(
     ) { paddingValues ->
 
         LazyColumn(modifier.padding(paddingValues)) {
-//            items(state.usuarios) { usuario ->
-//                UsuarioGerenciaItem(usuario) { nomeUsuario ->
-//                    onClickAbreDetalhes(nomeUsuario)
-//                }
-//            }
+            for(user in state.listUsuarios){
+                item { UsuarioGerenciaItem(usuario = user) {
+                    onClickAbreDetalhes(user.username)
+                } }
+            }
         }
-
     }
 }
 
@@ -70,10 +70,11 @@ fun AppBarGerenciaUsuarios(
 
 @Composable
 fun UsuarioGerenciaItem(
-    onClick: (String) -> Unit
+    usuario: Usuario,
+    onClick: () -> Unit
 ) {
     Card(
-        Modifier.clickable { },
+        Modifier.clickable { onClick() },
         backgroundColor = MaterialTheme.colors.background
     ) {
         Row(
@@ -91,12 +92,12 @@ fun UsuarioGerenciaItem(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Nome exemplo",
+                    text = usuario.name,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "Usuario exemplo"
+                    text = usuario.username
                 )
             }
         }
