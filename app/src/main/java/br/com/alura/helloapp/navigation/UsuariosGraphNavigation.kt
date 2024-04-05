@@ -39,9 +39,10 @@ fun NavGraphBuilder.usuariosGraphNavigation(onVolta: () -> Unit, onNavegaParaLog
 
                 CaixaDialogoContasUsuario(state = state, onClickDispensa = onVolta,
                     onClickAdicionaNovaConta = { onNavegaParaLogin() },
-                    onClickListaContatosPorUsuario = {
-                        novoUsuario ->
+                    onUsernameClick = {
+                        username ->
                         scope.launch {
+                            viewModel.trocarEntreSuasContas(username)
                             onNavegaParaHome()
                         }
                     },
