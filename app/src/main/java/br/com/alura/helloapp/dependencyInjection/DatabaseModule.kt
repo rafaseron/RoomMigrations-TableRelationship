@@ -31,6 +31,7 @@ class DatabaseModule {
         )/*.fallbackToDestructiveMigration()*/
             .addMigrations(Migrations.MIGRATION_2_3)
             .addMigrations(Migrations.MIGRATION_3_4)
+            .addMigrations(Migrations.MIGRATION_4_5)
             .build()
     }
 
@@ -45,6 +46,17 @@ class DatabaseModule {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE 'Usuario' ADD COLUMN 'fotoPerfil' TEXT NOT NULL DEFAULT ''")
             }
+        }
+
+        val MIGRATION_4_5 = object: Migration(4,5){
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE IF NOT EXISTS 'ContatoCopia' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'nome' TEXT NOT NULL, 'sobrenome' TEXT NOT NULL, 'telefone' TEXT NOT NULL, 'fotoPerfil' TEXT NOT NULL, 'aniversario' INTEGER, 'usernameAtual' TEXT NOT NULL DEFAULT '', FOREIGN KEY('usernameAtual') REFERENCES 'Usuario'('username') ON UPDATE NO ACTION ON DELETE CASCADE )")
+                //esse SQL acima vem pronto na 5.json - gerado pela auto migration do room, em schemas location
+                database.execSQL("INSERT INTO ContatoCopia SELECT * FROM Contato") //copiar tabela: Contato -> ContatoCopia
+                database.execSQL("DROP TABLE Contato") //excluir tabela Contato
+                database.execSQL("ALTER TABLE ContatoCopia RENAME TO Contato") //renomear tabela de ContatoCopia para Contato
+            }
+
         }
     }
 
