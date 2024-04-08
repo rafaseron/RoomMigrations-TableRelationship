@@ -12,7 +12,7 @@ import br.com.alura.helloapp.localData.room.dao.ContatoDao
 import br.com.alura.helloapp.localData.room.dao.UsuarioDao
 import br.com.alura.helloapp.localData.room.entity.Usuario
 
-@Database(entities = [Contato::class, Usuario::class], version = 4, exportSchema = true, autoMigrations = [AutoMigration(from = 1,to = 2, spec = MIGRATION_1_2::class)])
+@Database(entities = [Contato::class, Usuario::class], version = 5, exportSchema = true, autoMigrations = [AutoMigration(from = 1,to = 2, spec = MIGRATION_1_2::class)])
 @TypeConverters(TypeConverter::class)
 abstract class HelloAppDatabase : RoomDatabase() {
     abstract fun contatoDao(): ContatoDao
