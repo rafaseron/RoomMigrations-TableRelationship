@@ -7,8 +7,7 @@ import androidx.room.ForeignKey.Companion.CASCADE
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(foreignKeys = [ ForeignKey(entity = Usuario::class, parentColumns = ["username"], childColumns = ["usernameAtual"],
-    /*onUpdate = CASCADE,*/ onDelete = CASCADE) ] )
+@Entity(foreignKeys = [ForeignKey(entity = Usuario::class, parentColumns = ["username"], childColumns = ["usernameAtual"], onDelete = CASCADE)]) //onUpdate = CASCADE
 data class Contato(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
