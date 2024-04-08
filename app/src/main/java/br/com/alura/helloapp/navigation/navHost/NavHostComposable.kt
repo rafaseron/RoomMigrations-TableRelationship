@@ -1,7 +1,10 @@
 package br.com.alura.helloapp.navigation.navHost
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,17 +20,17 @@ import br.com.alura.helloapp.navigation.typeSafety.FormularioUsuario
 import br.com.alura.helloapp.navigation.typeSafety.ListaUsuarios
 import br.com.alura.helloapp.navigation.typeSafety.TypeSafetyNavigation
 import br.com.alura.helloapp.navigation.usuariosGraphNavigation
+import br.com.alura.helloapp.ui.viewmodels.SessaoViewModel
 
 @Composable
-fun NavHostComposable(
-    navController: NavHostController, modifier: Modifier = Modifier
-) {
+fun NavHostComposable(navController: NavHostController, modifier: Modifier = Modifier) {
+
     NavHost(navController = navController, startDestination = TypeSafetyNavigation.SplashScreen.rota, modifier = modifier) {
 
-        splashNavigation(onNavegaParaLogin = { navController.NavegaParaLoginElimpaBackStack() }, onNavegaParaHome = { navController.navegaParaHome() })
+        splashNavigation(onNavegaParaLogin = { navController.navigateToLoginScreenAndClearBacktack() }, onNavegaParaHome = { navController.navegaParaHome() })
 
         loginGraphNavigation(onNavegaParaHome = { navController.navegaParaHome() }, onNavegaParaFormularioLogin = { navController.navegaParaFormlarioLogin() },
-            onNavegaParaLogin = { navController.NavegaParaLoginElimpaBackStack() })
+            onNavegaParaLogin = { navController.navigateToLoginScreenAndClearBacktack() })
 
         listaContatosScreenNavigation(onNavegaParaDetalhes = { idContato -> navController.navegaParaDetalhes(idContato) },
             onNavegaParaFormularioContato = { navController.navegaParaFormularioContato() },
@@ -44,6 +47,15 @@ fun NavHostComposable(
 
         buscaContatosScreenNavigation(onVolta = { navController.popBackStack() }, onClickNavegaParaDetalhesContato = { idContato -> navController.navegaParaDetalhes(idContato) })
 
+    }
+
+    //NavHost acompanhando atualizacao no Estado de login para direcionar o Usuario para tela de Login caso deslogue da conta atual
+    val viewModel: SessaoViewModel = hiltViewModel()
+    val uiState = viewModel.uiState.collectAsState()
+    LaunchedEffect(uiState.value.logado) {
+        if(!uiState.value.logado){
+            navController.navigateToLoginScreenAndClearBacktack()
+        }
     }
 }
 
@@ -68,7 +80,7 @@ fun NavHostController.navegaParaFormularioContato(idContato: Long = 0L) {
     navigate("${FormularioContato.rota}/$idContato")
 }
 
-fun NavHostController.NavegaParaLoginElimpaBackStack() {
+fun NavHostController.navigateToLoginScreenAndClearBacktack() {
     navegaLimpo(TypeSafetyNavigation.LoginGraph.rota)
 }
 

@@ -2,15 +2,18 @@ package br.com.alura.helloapp.ui.viewmodels
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.alura.helloapp.localData.preferences.PreferencesKey
 import br.com.alura.helloapp.localData.room.entity.Usuario
 import br.com.alura.helloapp.localData.room.repository.ContatoRepository
 import br.com.alura.helloapp.localData.room.repository.UsuarioRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -73,6 +76,14 @@ class FormularioUsuarioViewModel @Inject constructor(savedStateHandle: SavedStat
     suspend fun apagarUsuarioOnDeleteClick(){
         usuarioRepository.delete(Usuario(name = uiState.value.nome, password = uiState.value.senha, username = uiState.value.nomeUsuario))
         contatoRepository.deleteAllContactsFromUsername(uiState.value.nomeUsuario)
+        val preferences = dataStore.data.first()
+        if (uiState.value.nomeUsuario == preferences[PreferencesKey.AUTHENTICATED_USER]){
+            dataStore.edit {
+                preferences ->
+                preferences.remove(PreferencesKey.AUTHENTICATED_USER)
+                //preferences[PreferencesKey.LOGADO] = false
+            }
+        }
 
     }
 
